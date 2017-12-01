@@ -1,0 +1,1 @@
+tensorboard --logdir=connect4\output\c4Scenario8.py\tensorboard_log
