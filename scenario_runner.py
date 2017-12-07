@@ -15,7 +15,9 @@ class ScenarioRunner:
     test_data_size = 0.2
     validation_data_size = 0.2
 
+    train_data_percentage = 1
     batch_size = 32
+
     trained_epochs = 0
     training_time = 0
     def __init__(self, experiment):
@@ -37,7 +39,6 @@ class ScenarioRunner:
         params = self.experiment.get_params()
         for key, value in params.items():
             setattr(self, key, value)
-
 
     ######################################################
     ####Folder####
@@ -84,6 +85,9 @@ class ScenarioRunner:
 
         cut = int(len(train_data) * (1 - self.validation_data_size))
         validation_data = train_data[cut:]
+        train_data = train_data[:cut]
+
+        cut = int(len(train_data) * self.train_data_percentage)
         train_data = train_data[:cut]
 
         self.x_train_role = np.array([obj[0] for obj in train_data])
@@ -154,7 +158,8 @@ class ScenarioRunner:
         file.write(os.linesep)
         file.write('#######Params#######')
         file.write(os.linesep)
-        file.write("batch_size : " + str(self.batch_size))
+        file.write("batch_size : " + str(self.batch_size) + os.linesep)
+        file.write("train_data_percentage : " + str(self.train_data_percentage) + os.linesep)
         file.write(os.linesep)
         file.write(os.linesep)
         file.write('#######Layer#######')

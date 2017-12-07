@@ -1,0 +1,22 @@
+description : 25% of data
+run for 15 epochs
+training time : 953.006167707895
+Test loss : 0.0545354441978
+Test acc : 0.417294922345
+
+
+#######Params#######
+batch_size : 32train_data_percentage : 0.25
+
+#######Layer#######
+<keras.engine.topology.InputLayer object at 0x0000026D4C2C46A0>
+<keras.layers.convolutional.Conv2D object at 0x0000026D4C34AA20>
+<keras.layers.pooling.MaxPooling2D object at 0x0000026D4C34AC18>
+<keras.layers.convolutional.ZeroPadding2D object at 0x0000026D4C34ABE0>
+<keras.layers.convolutional.Conv2D object at 0x0000026D4C36B4A8>
+<keras.layers.pooling.MaxPooling2D object at 0x0000026D4F048080>
+<keras.engine.topology.InputLayer object at 0x0000026D4A10D438>
+<keras.layers.core.Flatten object at 0x0000026D4DD73390>
+<keras.layers.merge.Concatenate object at 0x0000026D4F2020B8>
+<keras.layers.core.Dense object at 0x0000026D4F202AC8>
+<keras.layers.core.Dense object at 0x0000026D4DD80A58>

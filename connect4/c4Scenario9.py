@@ -18,7 +18,8 @@ class c4Scenario9:
     num_actions = 8
 
     def get_params(self):
-        return {'batch_size':128}
+        return {'batch_size':128,
+                'experiment_description': 'CNN with sqaured field with size 42 * 42 and randomly shuffled, batchsize increased'}
 
     def file_path(self):
         return self.folder, self.file_name

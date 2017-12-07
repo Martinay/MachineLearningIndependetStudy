@@ -2,25 +2,26 @@ import numpy as np
 import pandas as pd
 import keras
 import os
+import random
 
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Input, ZeroPadding2D, UpSampling2D
 from keras.models import Model
 from keras import losses
 
 
-class c4Scenario10:
+class c4Scenario10aaa:
     folder = 'connect4'
     file_name = os.path.basename(__file__)
 
     random_seed = 42
-
     files = ['connect4_role0.csv', 'connect4_role1.csv']
     metadata_size = 4
     state_size = 128
     num_actions = 8
 
     def get_params(self):
-        return {'experiment_description':'CNN with sqaured field with size 42 * 42 and randomly shuffled, last activation = softmax'}
+        return {'experiment_description' : '10% of training data',
+                'train_data_percentage': 0.1}
 
     def file_path(self):
         return self.folder, self.file_name
