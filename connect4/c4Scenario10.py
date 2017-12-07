@@ -18,7 +18,7 @@ class c4Scenario10:
     num_actions = 8
 
     def get_params(self):
-        return {'batch_size':128}
+        return {'experiment_description':'CNN'}
 
     def file_path(self):
         return self.folder, self.file_name

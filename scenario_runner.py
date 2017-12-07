@@ -1,5 +1,6 @@
 import os
 from random import shuffle
+from timeit import default_timer as timer
 
 import numpy as np
 import pandas as pd
@@ -16,6 +17,7 @@ class ScenarioRunner:
 
     batch_size = 32
     trained_epochs = 0
+    training_time = 0
     def __init__(self, experiment):
         self.experiment = experiment
         self.init_parameter()
@@ -136,7 +138,12 @@ class ScenarioRunner:
 
         self.create_output_dir()
         file = open(self.evaluation_log_path, 'w')
-        file.write('run for ' + str(self.trained_epochs) + ' epochs')
+
+        if 'experiment_description' in dir(self):
+            file.write('description : ' + self.experiment_description + os.linesep)
+
+        file.write('run for ' + str(self.trained_epochs) + ' epochs' + os.linesep)
+        file.write('training time : ' + str(self.training_time) + os.linesep)
 
         for i, metric in enumerate(self.model.metrics_names):
             text = 'Test ' + metric + " : " + str(scores[i]) + os.linesep
@@ -147,12 +154,13 @@ class ScenarioRunner:
         file.write(os.linesep)
         file.write('#######Params#######')
         file.write(os.linesep)
-        file.write(str(self.experiment.get_params()))
+        file.write("batch_size : " + str(self.batch_size))
         file.write(os.linesep)
         file.write(os.linesep)
         file.write('#######Layer#######')
         file.write(os.linesep)
-        file.write(str(self.model.layers))
+        for layer in self.model.layers:
+            file.write(str(layer) + os.linesep)
         file.close()
 
     ######################################################
@@ -253,7 +261,10 @@ class ScenarioRunner:
         self.delete_output_dir()
 
         self.plot_confusion_matrix()
+        start = timer()
         self.train(epoches)
+        end = timer()
+        self.training_time = end - start
         self.save()
         self.summarize()
         self.plot()

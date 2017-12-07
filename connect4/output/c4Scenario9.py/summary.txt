@@ -1,0 +1,20 @@
+run for 29 epochs
+Test loss : 0.039098198616
+Test acc : 0.548704378644
+
+
+#######Params#######
+batch_size : 128
+
+#######Layer#######
+<keras.engine.topology.InputLayer object at 0x000002938A38ED30>
+<keras.layers.convolutional.Conv2D object at 0x000002938A3AC978>
+<keras.layers.pooling.MaxPooling2D object at 0x000002938A3F6400>
+<keras.layers.convolutional.ZeroPadding2D object at 0x000002938A3AC9B0>
+<keras.layers.convolutional.Conv2D object at 0x000002938A3ACCF8>
+<keras.layers.pooling.MaxPooling2D object at 0x000002938A3ACD30>
+<keras.engine.topology.InputLayer object at 0x000002938816C400>
+<keras.layers.core.Flatten object at 0x000002938BB582E8>
+<keras.layers.merge.Concatenate object at 0x000002938C6B3128>
+<keras.layers.core.Dense object at 0x000002938C6B39E8>
+<keras.layers.core.Dense object at 0x000002938BB4EAC8>

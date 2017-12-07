@@ -1,0 +1,18 @@
+description : first experiment
+run for 27 epochs
+training time : 192.75527053120973
+Test loss : 0.0410161818886
+Test acc : 0.481302111961
+
+
+#######Params#######
+batch_size : 32
+
+#######Layer#######
+<keras.engine.topology.InputLayer object at 0x0000019A0A668908>
+<keras.layers.convolutional.ZeroPadding2D object at 0x0000019A0A6E99E8>
+<keras.layers.convolutional.Conv2D object at 0x0000019A0A6E9748>
+<keras.engine.topology.InputLayer object at 0x0000019A0849B470>
+<keras.layers.core.Flatten object at 0x0000019A0A6E9A58>
+<keras.layers.merge.Concatenate object at 0x0000019A0A6E99B0>
+<keras.layers.core.Dense object at 0x0000019A0A719978>

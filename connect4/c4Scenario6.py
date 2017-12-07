@@ -17,8 +17,6 @@ class c4Scenario6:
     state_size = 128
     num_actions = 8
 
-    def get_batch_size(self):
-        return 32
 
     def file_path(self):
         return self.folder, self.file_name
