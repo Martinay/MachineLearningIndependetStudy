@@ -1,5 +1,8 @@
-number of executions : 1
 description : first experiment
+run for 10 epochs
+training time in seconds: 190.86063619271593
+Test loss : 0.0418032543596
+Test acc : 0.460881721474
 
 
 #######Params#######

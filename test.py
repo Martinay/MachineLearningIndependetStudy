@@ -1,11 +1,3 @@
-class test:
-    abc = 'hallo'
-    def newAttrib(self):
-        setattr(self, 'newa', 4)
-        setattr(self, 'abc', 2)
-
-a = test()
-print(a.abc)
-a.newAttrib()
-print(a.abc)
-print(a.newa)
+import numpy as np
+liste = [[1,2],[3,4]]
+print(np.mean(liste, axis=1))

@@ -11,6 +11,10 @@ from keras.utils import plot_model
 from sklearn.metrics import confusion_matrix
 import shutil
 
+from connect4.c4Scenario1 import c4Scenario1
+from connect4.c4Scenario1a import c4Scenario1a
+
+
 class ScenarioRunner:
     test_data_size = 0.2
     validation_data_size = 0.2
@@ -20,9 +24,11 @@ class ScenarioRunner:
 
     trained_epochs = 0
     training_time = 0
-    def __init__(self, experiment):
+    execution_no = 0
+
+    def init(self, experiment):
         self.experiment = experiment
-        self.init_parameter()
+        self.init_hyper_parameter()
         self.init_folder()
         self.load_data()
         self.build_model()
@@ -32,7 +38,7 @@ class ScenarioRunner:
     ####Parameter####
     ######################################################
 
-    def init_parameter(self):
+    def init_hyper_parameter(self):
         if not 'get_params' in dir(self.experiment):
             return
 
@@ -46,16 +52,21 @@ class ScenarioRunner:
 
     def init_folder(self):
         folder, experiment_name = self.experiment.file_path()
-        inner_folder = os.path.join(folder, 'output')
-        inner_folder = os.path.join(inner_folder, experiment_name)
-        self.output_dir = os.path.join(os.getcwd(), inner_folder)
-        self.model_path = os.path.join(self.output_dir, 'trained_model.h5')
-        self.csv_path = os.path.join(self.output_dir, 'trained_history.csv')
-        self.evaluation_log_path = os.path.join(self.output_dir, 'summary.txt')
-        self.model_plot_path = os.path.join(self.output_dir, 'model.png')
-        self.confusion_matrix_path = os.path.join(self.output_dir, 'confusion_matrix')
+        relative_folder = os.path.join(folder, 'output')
+        relative_folder = os.path.join(relative_folder, experiment_name)
+        self.output_dir = os.path.join(os.getcwd(), relative_folder)
+        self.summary_all_executions_path = os.path.join(self.output_dir, 'summary.txt')
         self.learning_curve_path = os.path.join(self.output_dir, 'learning_curve')
-        tensorboard_log_dir = os.path.join(self.output_dir, 'tensorboard_log')
+
+        relative_execution_folder = os.path.join(relative_folder, "execution" + str(self.execution_no))
+        self.execution_output_dir = os.path.join(os.getcwd(), relative_execution_folder)
+        self.model_path = os.path.join(self.execution_output_dir, 'trained_model.h5')
+        self.csv_path = os.path.join(self.execution_output_dir, 'trained_history.csv')
+        self.evaluation_log_path = os.path.join(self.execution_output_dir, 'summary.txt')
+        self.model_plot_path = os.path.join(self.execution_output_dir, 'model.png')
+        self.confusion_matrix_path = os.path.join(self.execution_output_dir, 'confusion_matrix')
+        self.execution_learning_curve_path = os.path.join(self.execution_output_dir, 'learning_curve')
+        tensorboard_log_dir = os.path.join(self.execution_output_dir, 'tensorboard_log')
 
         self.callback = [callbacks.TerminateOnNaN(),
                     callbacks.CSVLogger(self.csv_path, separator=',', append=True),
@@ -122,6 +133,8 @@ class ScenarioRunner:
 
 
     def train(self, epochs=1):
+        start = timer()
+
         history = self.model.fit(self.x_fit_train, y=self.y_train,
                   batch_size=self.batch_size,
                   epochs=epochs,
@@ -130,6 +143,9 @@ class ScenarioRunner:
                   validation_data=(self.x_fit_validation, self.y_validation),
                   callbacks=self.callback)
 
+        end = timer()
+        self.training_time = end - start
+
         self.trained_epochs +=len(history.epoch)
 
     ######################################################
@@ -137,22 +153,45 @@ class ScenarioRunner:
     ######################################################
 
 
-    def summarize(self):
+    def summarize_execution(self):
         scores = self.model.evaluate(self.x_fit_test, self.y_test, verbose=1)
 
-        self.create_output_dir()
+        self.create_execution_output_dir()
         file = open(self.evaluation_log_path, 'w')
 
         if 'experiment_description' in dir(self):
             file.write('description : ' + self.experiment_description + os.linesep)
 
         file.write('run for ' + str(self.trained_epochs) + ' epochs' + os.linesep)
-        file.write('training time : ' + str(self.training_time) + os.linesep)
+        file.write('training time in seconds: ' + str(self.training_time) + os.linesep)
 
         for i, metric in enumerate(self.model.metrics_names):
             text = 'Test ' + metric + " : " + str(scores[i]) + os.linesep
             print(text)
             file.write(text)
+
+        file.write(os.linesep)
+        file.write(os.linesep)
+        file.write('#######Params#######')
+        file.write(os.linesep)
+        file.write("batch_size : " + str(self.batch_size) + os.linesep)
+        file.write("train_data_percentage : " + str(self.train_data_percentage) + os.linesep)
+        file.write(os.linesep)
+        file.write(os.linesep)
+        file.write('#######Layer#######')
+        file.write(os.linesep)
+        for layer in self.model.layers:
+            file.write(str(layer) + os.linesep)
+        file.close()
+
+    def summarize_all_executions(self, nr_of_executions):
+        self.create_output_dir()
+        file = open(self.summary_all_executions_path, 'w')
+
+        file.write('number of executions : ' + str(nr_of_executions) + os.linesep)
+
+        if 'experiment_description' in dir(self):
+            file.write('description : ' + self.experiment_description + os.linesep)
 
         file.write(os.linesep)
         file.write(os.linesep)
@@ -186,11 +225,11 @@ class ScenarioRunner:
 
     def plot(self):
         self.plot_confusion_matrix()
-        self.plot_learn_curve()
+        self.plot_current_execution_learn_curve()
         self.plot_layers()
 
     def plot_confusion_matrix(self):
-        self.create_output_dir()
+        self.create_execution_output_dir()
         filename = self.confusion_matrix_path + str(self.trained_epochs)
         cls_pred = self.model.predict(x=self.x_fit_test)
         cls_pred = [label.argmax() for label in cls_pred]
@@ -217,22 +256,57 @@ class ScenarioRunner:
         plt.savefig(filename + ".png")
         plt.close()
 
-    def plot_learn_curve(self):
-        self.create_output_dir()
+    def plot_avg_learn_curve(self, nr_of_executions):
+        episodes = []
+        train_accs = []
+        val_accs = []
+        for i in range(nr_of_executions):
+            execution_folder = os.path.join(self.output_dir, "execution" + str(i))
+            csv_path = os.path.join(execution_folder, 'trained_history.csv')
+            loaded_meta = pd.read_csv(csv_path)
+            episode = loaded_meta.epoch
+            val_acc = loaded_meta.val_acc
+            train_acc = loaded_meta.acc
 
+            episodes.append(episode)
+            train_accs.append(train_acc)
+            val_accs.append(val_acc)
+
+        min_episodes = np.min([obj.values.max() for obj in episodes])
+        avg_train_accs = []
+        avg_val_accs = []
+
+        for episode_nr in range(min_episodes + 1):
+            episode_val_acc = []
+            episode_train_acc = []
+            for execution_nr in range(nr_of_executions):
+                episode_val_acc.append(val_accs[execution_nr][episode_nr])
+                episode_train_acc.append(train_accs[execution_nr][episode_nr])
+
+            avg_train_accs.append(np.mean(episode_train_acc))
+            avg_val_accs.append(np.mean(episode_val_acc))
+
+        self.plot_learn_curve(self.create_output_dir, self.learning_curve_path, range(min_episodes + 1),
+                              avg_val_accs, avg_train_accs)
+
+    def plot_current_execution_learn_curve(self):
         loaded_meta = pd.read_csv(self.csv_path)
-        accuracies = loaded_meta.val_acc
-        episodes = loaded_meta.epoch
 
-        plt.plot(episodes, accuracies, 'o-', linewidth=2, label='Validation data')
+        self.plot_learn_curve(self.create_execution_output_dir, self.execution_learning_curve_path, loaded_meta.epoch,
+                              loaded_meta.val_acc, loaded_meta.acc)
+
+    def plot_learn_curve(self, create_output_dir, path, episodes, val_acc, train_acc):
+        create_output_dir()
+
+        plt.plot(episodes, val_acc, 'o-', linewidth=2, label='Validation data')
         plt.legend(loc='best')
         plt.xlabel("Episode")
         plt.ylabel("Accuracy score")
-        plt.savefig(self.learning_curve_path + '_validation_' +'.png')
+        plt.savefig(path + '_validation_' +'.png')
 
-        plt.plot(episodes, loaded_meta.acc, 'o-', linewidth=2, label='Training data')
+        plt.plot(episodes, train_acc, 'o-', linewidth=2, label='Training data')
         plt.legend(loc='best')
-        plt.savefig(self.learning_curve_path + '_both_' +'.png')
+        plt.savefig(path + '_both_' +'.png')
         plt.close()
 
     def plot_layers(self):
@@ -246,13 +320,18 @@ class ScenarioRunner:
         if os.path.exists(self.output_dir):
             shutil.rmtree(self.output_dir)
 
+    def create_execution_output_dir(self):
+        if not os.path.isdir(self.execution_output_dir):
+            os.makedirs(self.execution_output_dir)
+
     def create_output_dir(self):
         if not os.path.isdir(self.output_dir):
             os.makedirs(self.output_dir)
 
     def save(self):
-        self.create_output_dir()
+        self.create_execution_output_dir()
         self.model.save(self.model_path)
+
         print('Saved trained model at %s ' % self.model_path)
 
     def load(self):
@@ -262,14 +341,30 @@ class ScenarioRunner:
 ######################################################
 ####AutoMode####
 ######################################################
-    def run(self, epoches=200):
+    def reset_execution(self):
+        self.init_folder()
+        #self.build_model() reset model
+
+        self.trained_epochs = 0
+
+    def run(self, max_epoches=50, nr_of_executions = 1):
         self.delete_output_dir()
 
-        self.plot_confusion_matrix()
-        start = timer()
-        self.train(epoches)
-        end = timer()
-        self.training_time = end - start
-        self.save()
-        self.summarize()
-        self.plot()
+        while nr_of_executions > self.execution_no:
+            self.plot_confusion_matrix()
+            self.train(max_epoches)
+            self.save()
+            self.summarize_execution()
+            self.plot()
+
+            self.execution_no +=1
+            self.reset_execution()
+
+            print(os.linesep)
+            print(os.linesep)
+            print("finished execution " + str(self.execution_no) + " of " + str(nr_of_executions))
+            print(os.linesep)
+            print(os.linesep)
+
+        self.summarize_all_executions(nr_of_executions=nr_of_executions)
+        self.plot_avg_learn_curve(nr_of_executions=nr_of_executions)
