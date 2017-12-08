@@ -1,6 +1,9 @@
 #tensorboard
 tensorboard_log/
 
+#partialy output folder
+execution*/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
