@@ -6,13 +6,11 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sn
+from keras import backend as K
 from keras import callbacks
 from keras.utils import plot_model
 from sklearn.metrics import confusion_matrix
 import shutil
-
-from connect4.c4Scenario1 import c4Scenario1
-from connect4.c4Scenario1a import c4Scenario1a
 
 
 class ScenarioRunner:
@@ -57,13 +55,13 @@ class ScenarioRunner:
         self.output_dir = os.path.join(os.getcwd(), relative_folder)
         self.summary_all_executions_path = os.path.join(self.output_dir, 'summary.txt')
         self.learning_curve_path = os.path.join(self.output_dir, 'learning_curve')
+        self.model_plot_path = os.path.join(self.output_dir, 'model.png')
 
-        relative_execution_folder = os.path.join(relative_folder, "execution" + str(self.execution_no))
+        relative_execution_folder = os.path.join(relative_folder, str(self.execution_no))
         self.execution_output_dir = os.path.join(os.getcwd(), relative_execution_folder)
         self.model_path = os.path.join(self.execution_output_dir, 'trained_model.h5')
         self.csv_path = os.path.join(self.execution_output_dir, 'trained_history.csv')
         self.evaluation_log_path = os.path.join(self.execution_output_dir, 'summary.txt')
-        self.model_plot_path = os.path.join(self.execution_output_dir, 'model.png')
         self.confusion_matrix_path = os.path.join(self.execution_output_dir, 'confusion_matrix')
         self.execution_learning_curve_path = os.path.join(self.execution_output_dir, 'learning_curve')
         tensorboard_log_dir = os.path.join(self.execution_output_dir, 'tensorboard_log')
@@ -72,7 +70,7 @@ class ScenarioRunner:
                     callbacks.CSVLogger(self.csv_path, separator=',', append=True),
                     callbacks.TensorBoard(log_dir=tensorboard_log_dir, histogram_freq=5, batch_size=self.batch_size,
                                           write_graph=True,
-                                          write_grads=True, write_images=True, embeddings_freq=0,
+                                          write_grads=True, write_images=False, embeddings_freq=0,
                                           embeddings_layer_names=None, embeddings_metadata=None),
                     callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbose=1, mode='auto',
                                                 epsilon=0.0001, cooldown=0, min_lr=0),
@@ -169,19 +167,6 @@ class ScenarioRunner:
             text = 'Test ' + metric + " : " + str(scores[i]) + os.linesep
             print(text)
             file.write(text)
-
-        file.write(os.linesep)
-        file.write(os.linesep)
-        file.write('#######Params#######')
-        file.write(os.linesep)
-        file.write("batch_size : " + str(self.batch_size) + os.linesep)
-        file.write("train_data_percentage : " + str(self.train_data_percentage) + os.linesep)
-        file.write(os.linesep)
-        file.write(os.linesep)
-        file.write('#######Layer#######')
-        file.write(os.linesep)
-        for layer in self.model.layers:
-            file.write(str(layer) + os.linesep)
         file.close()
 
     def summarize_all_executions(self, nr_of_executions):
@@ -224,11 +209,10 @@ class ScenarioRunner:
     ######################################################
 
     def plot(self):
-        self.plot_confusion_matrix()
+        self.plot_current_execution_confusion_matrix()
         self.plot_current_execution_learn_curve()
-        self.plot_layers()
 
-    def plot_confusion_matrix(self):
+    def plot_current_execution_confusion_matrix(self):
         self.create_execution_output_dir()
         filename = self.confusion_matrix_path + str(self.trained_epochs)
         cls_pred = self.model.predict(x=self.x_fit_test)
@@ -343,7 +327,15 @@ class ScenarioRunner:
 ######################################################
     def reset_execution(self):
         self.init_folder()
-        #self.build_model() reset model
+
+        session = K.get_session()
+        for layer in self.model.layers:
+            for v in layer.__dict__:
+                v_arg = getattr(layer, v)
+                if hasattr(v_arg, 'initializer'):
+                    initializer_method = getattr(v_arg, 'initializer')
+                    initializer_method.run(session=session)
+                    print('reinitializing layer {}.{}'.format(layer.name, v))
 
         self.trained_epochs = 0
 
@@ -351,7 +343,7 @@ class ScenarioRunner:
         self.delete_output_dir()
 
         while nr_of_executions > self.execution_no:
-            self.plot_confusion_matrix()
+            #self.plot_current_execution_confusion_matrix()
             self.train(max_epoches)
             self.save()
             self.summarize_execution()
@@ -368,3 +360,4 @@ class ScenarioRunner:
 
         self.summarize_all_executions(nr_of_executions=nr_of_executions)
         self.plot_avg_learn_curve(nr_of_executions=nr_of_executions)
+        self.plot_layers()

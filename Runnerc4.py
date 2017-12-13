@@ -15,7 +15,7 @@ from connect4.c4Scenario8 import c4Scenario8
 from connect4.c4Scenario9 import c4Scenario9
 from scenario_runner import ScenarioRunner
 
-input = 15 # int(raw_input())
+input = 11 # int(raw_input())
 
 runner = ScenarioRunner()
 if input == 1:
@@ -49,4 +49,4 @@ elif input == 14:
 elif input == 15:
     runner.init(c4Scenario1a())
 
-runner.run(max_epoches=1, nr_of_executions=2)
+runner.run(max_epoches=30, nr_of_executions=30)
