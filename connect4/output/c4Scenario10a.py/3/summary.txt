@@ -1,0 +1,5 @@
+description : 50% of data
+run for 30 epochs
+training time in seconds: 5410.856388755034
+Test loss : 0.0635846107592
+Test acc : 0.224873932791
