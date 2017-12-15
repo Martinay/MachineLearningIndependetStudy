@@ -15,7 +15,22 @@ from connect4.c4Scenario8 import c4Scenario8
 from connect4.c4Scenario9 import c4Scenario9
 from scenario_runner import ScenarioRunner
 
-input = 11 # int(raw_input())
+input = 10 # int(raw_input())
+max_epoches=30
+nr_of_executions = 20
+use_Gpu = True
+
+if use_Gpu:
+    import tensorflow as tf
+    from keras.backend.tensorflow_backend import set_session
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
+    config = tf.ConfigProto(gpu_options=gpu_options)
+    config.gpu_options.allow_growth = True
+    config.gpu_options.visible_device_list = "0"
+    #session = tf.Session(config=config)
+    set_session(tf.Session(config=config))
+
+
 
 runner = ScenarioRunner()
 if input == 1:
@@ -49,4 +64,4 @@ elif input == 14:
 elif input == 15:
     runner.init(c4Scenario1a())
 
-runner.run(max_epoches=30, nr_of_executions=30)
+runner.run(max_epoches=max_epoches, nr_of_executions=nr_of_executions)

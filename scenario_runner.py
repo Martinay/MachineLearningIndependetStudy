@@ -69,7 +69,7 @@ class ScenarioRunner:
         self.callback = [callbacks.TerminateOnNaN(),
                     callbacks.CSVLogger(self.csv_path, separator=',', append=True),
                     callbacks.TensorBoard(log_dir=tensorboard_log_dir, histogram_freq=5, batch_size=self.batch_size,
-                                          write_graph=True,
+                                          write_graph=False,
                                           write_grads=True, write_images=False, embeddings_freq=0,
                                           embeddings_layer_names=None, embeddings_metadata=None),
                     callbacks.ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbose=1, mode='auto',
