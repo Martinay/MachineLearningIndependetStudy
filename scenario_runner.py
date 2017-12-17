@@ -12,9 +12,6 @@ from keras.utils import plot_model
 from sklearn.metrics import confusion_matrix
 import shutil
 
-from connect4.c4Scenario10a import c4Scenario10a
-from connect4.c4Scenario10aaa import c4Scenario10aaa
-
 
 class ScenarioRunner:
     test_data_size = 0.2
@@ -46,6 +43,7 @@ class ScenarioRunner:
         params = self.experiment.get_params()
         for key, value in params.items():
             setattr(self, key, value)
+            setattr(self.experiment, key, value)
 
     ######################################################
     ####Folder####
@@ -187,6 +185,8 @@ class ScenarioRunner:
         file.write(os.linesep)
         file.write("batch_size : " + str(self.batch_size) + os.linesep)
         file.write("train_data_percentage : " + str(self.train_data_percentage) + os.linesep)
+        if 'random_seed' in dir(self.experiment):
+            file.write("random_seed : " + str(self.experiment.random_seed) + os.linesep)
         file.write(os.linesep)
         file.write(os.linesep)
         file.write('#######Layer#######')

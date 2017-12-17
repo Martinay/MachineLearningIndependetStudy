@@ -8,7 +8,7 @@ from keras.models import Model
 from keras import losses
 
 
-class c4Scenario10:
+class c4Scenario10b:
     folder = 'connect4'
     file_name = os.path.basename(__file__)
 
@@ -20,7 +20,8 @@ class c4Scenario10:
     num_actions = 8
 
     def get_params(self):
-        return {'experiment_description':'CNN with sqaured field with size 42 * 42 and randomly shuffled, last activation = softmax'}
+        return {'random_seed':30,
+                'experiment_description':'CNN with sqaured field with size 42 * 42 and randomly shuffled with seed = 30, last activation = softmax'}
 
     def file_path(self):
         return self.folder, self.file_name

@@ -17,6 +17,9 @@ class c4Scenario5:
     state_size = 128
     num_actions = 8
 
+    def get_params(self):
+        return {'experiment_description':'CNN with sqaured field with size 42 * 42, first row is duplicated 42 times, last activation = softmax'}
+
     def file_path(self):
         return self.folder, self.file_name
 
@@ -28,15 +31,17 @@ class c4Scenario5:
         for file_name in self.files:
             data_folder = os.path.join(self.folder, 'data')
             file_path = os.path.join(data_folder, file_name)
-            loaded_meta = pd.read_csv(file_path, usecols=range(0, self.metadata_size), header=None)
-            loaded_features = pd.read_csv(file_path, usecols=range(self.metadata_size, self.metadata_size + self.state_size),
+            loaded_meta = pd.read_csv(file_path, usecols=range(2, self.metadata_size - 1), header=None)
+            loaded_features = pd.read_csv(file_path,
+                                          usecols=range(self.metadata_size + 2, self.metadata_size + self.state_size),
                                           header=None)
             loaded_labels = pd.read_csv(file_path,
-                                        usecols=range(self.metadata_size + self.state_size, self.metadata_size + self.state_size +
+                                        usecols=range(self.metadata_size + self.state_size + 1,
+                                                      self.metadata_size + self.state_size +
                                                       self.num_actions), header=None)
 
-            role_index = [*role_index, *[obj[2] for obj in loaded_meta.values]]
-            features_without_role = [*features_without_role, *[obj[2:] for obj in loaded_features.values]]
+            role_index = [*role_index, *loaded_meta.values]
+            features_without_role = [*features_without_role, *loaded_features.values]
             labels = [*labels, *loaded_labels.values]
 
         features_without_role = np.array(features_without_role).reshape(([-1, 42, 1, 3]))
@@ -56,7 +61,7 @@ class c4Scenario5:
         layers = keras.layers.concatenate([inputRole, layers])
 
         layers = Dense(128, activation='relu')(layers)
-        layers = Dense(len(y_train[0]), activation='relu')(layers)
+        layers = Dense(len(y_train[0]), activation='softmax')(layers)
 
         model = Model(inputs=[inputFeatures, inputRole], outputs=layers)
 

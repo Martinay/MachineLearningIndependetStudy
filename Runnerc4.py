@@ -4,6 +4,9 @@ from connect4.c4Scenario10a import c4Scenario10a
 from connect4.c4Scenario10aa import c4Scenario10aa
 from connect4.c4Scenario10aaa import c4Scenario10aaa
 from connect4.c4Scenario10aaaa import c4Scenario10aaaa
+from connect4.c4Scenario10b import c4Scenario10b
+from connect4.c4Scenario10bb import c4Scenario10bb
+from connect4.c4Scenario10c import c4Scenario10c
 from connect4.c4Scenario1a import c4Scenario1a
 from connect4.c4Scenario2 import c4Scenario2
 from connect4.c4Scenario3 import c4Scenario3
@@ -15,7 +18,11 @@ from connect4.c4Scenario8 import c4Scenario8
 from connect4.c4Scenario9 import c4Scenario9
 from scenario_runner import ScenarioRunner
 
-input = 14 # int(raw_input())
+# 10c
+# 10b
+# 10bb
+
+input = 5 # int(raw_input())
 max_epoches=30
 nr_of_executions = 20
 use_Gpu = True
@@ -23,13 +30,12 @@ use_Gpu = True
 if use_Gpu:
     import tensorflow as tf
     from keras.backend.tensorflow_backend import set_session
-    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.3)
     config = tf.ConfigProto(gpu_options=gpu_options)
     config.gpu_options.allow_growth = True
     config.gpu_options.visible_device_list = "0"
     #session = tf.Session(config=config)
     set_session(tf.Session(config=config))
-
 
 
 runner = ScenarioRunner()
@@ -63,5 +69,11 @@ elif input == 14:
     runner.init(c4Scenario10aaaa())
 elif input == 15:
     runner.init(c4Scenario1a())
+elif input == 16:
+    runner.init(c4Scenario10b())
+elif input == 17:
+    runner.init(c4Scenario10bb())
+elif input == 18:
+    runner.init(c4Scenario10c())
 
 runner.run(max_epoches=max_epoches, nr_of_executions=nr_of_executions)
