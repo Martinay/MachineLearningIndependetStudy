@@ -47,6 +47,7 @@ class c4Scenario10c:
             labels = [*labels, *[obj[1:] for obj in loaded_labels.values]]
 
         features_without_role = np.array(features_without_role).reshape(([-1, 42, 1, 3]))
+        features_without_role = np.repeat(features_without_role, len(features_without_role[0]), axis=2)
         return role_index, features_without_role, labels
 
     def build_model(self, x_train_features, x_train_roles, y_train):
@@ -57,8 +58,7 @@ class c4Scenario10c:
 
         # ((top_pad, bottom_pad), (left_pad, right_pad))
 
-        layers = UpSampling2D(size=(1, len(x_train_features[0])), data_format=None)(inputFeatures)
-        layers = Conv2D(16, (4, 4), padding='same', data_format="channels_last", activation='relu')(layers)
+        layers = Conv2D(16, (4, 4), padding='same', data_format="channels_last", activation='relu')(inputFeatures)
         layers = MaxPooling2D(pool_size=(2, 2))(layers)
 
         layers = ZeroPadding2D(padding=((1, 0), (1, 0)), data_format="channels_last")(layers)
