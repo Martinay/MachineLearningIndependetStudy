@@ -12,6 +12,9 @@ from keras.utils import plot_model
 from sklearn.metrics import confusion_matrix
 import shutil
 
+from connect4.c4Scenario10a import c4Scenario10a
+from connect4.c4Scenario10aaa import c4Scenario10aaa
+
 
 class ScenarioRunner:
     test_data_size = 0.2
@@ -361,3 +364,8 @@ class ScenarioRunner:
         self.summarize_all_executions(nr_of_executions=nr_of_executions)
         self.plot_avg_learn_curve(nr_of_executions=nr_of_executions)
         self.plot_layers()
+
+a = ScenarioRunner()
+a.init(c4Scenario10aaa())
+a.plot_avg_learn_curve(9)
+a.plot_layers()
