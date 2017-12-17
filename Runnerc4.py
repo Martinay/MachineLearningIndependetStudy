@@ -22,7 +22,7 @@ from scenario_runner import ScenarioRunner
 # 10b
 # 10bb
 
-input = 18 # int(raw_input())
+input = 16 # int(raw_input())
 max_epoches=30
 nr_of_executions = 20
 use_Gpu = True
