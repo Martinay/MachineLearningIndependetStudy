@@ -1,0 +1,17 @@
+number of executions : 5
+description : first experiment with softmax as activation
+
+
+#######Params#######
+batch_size : 32
+train_data_percentage : 1
+
+
+#######Layer#######
+<keras.engine.topology.InputLayer object at 0x0000023C0767CA58>
+<keras.layers.convolutional.ZeroPadding2D object at 0x0000023C07697DD8>
+<keras.layers.convolutional.Conv2D object at 0x0000023C07697F98>
+<keras.engine.topology.InputLayer object at 0x0000023C07697CC0>
+<keras.layers.core.Flatten object at 0x0000023C07697940>
+<keras.layers.merge.Concatenate object at 0x0000023C09ABC470>
+<keras.layers.core.Dense object at 0x0000023C09ABC3C8>
