@@ -245,7 +245,7 @@ class ScenarioRunner:
         train_accs = []
         val_accs = []
         for i in range(nr_of_executions):
-            execution_folder = os.path.join(self.output_dir, "execution" + str(i))
+            execution_folder = os.path.join(self.output_dir, str(i))
             csv_path = os.path.join(execution_folder, 'trained_history.csv')
             loaded_meta = pd.read_csv(csv_path)
             episode = loaded_meta.epoch

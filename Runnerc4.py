@@ -15,7 +15,7 @@ from connect4.c4Scenario8 import c4Scenario8
 from connect4.c4Scenario9 import c4Scenario9
 from scenario_runner import ScenarioRunner
 
-input = 10 # int(raw_input())
+input = 14 # int(raw_input())
 max_epoches=30
 nr_of_executions = 20
 use_Gpu = True
