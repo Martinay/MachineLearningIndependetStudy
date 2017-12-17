@@ -364,8 +364,3 @@ class ScenarioRunner:
         self.summarize_all_executions(nr_of_executions=nr_of_executions)
         self.plot_avg_learn_curve(nr_of_executions=nr_of_executions)
         self.plot_layers()
-
-a = ScenarioRunner()
-a.init(c4Scenario10aaa())
-a.plot_avg_learn_curve(9)
-a.plot_layers()
