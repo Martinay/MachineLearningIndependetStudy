@@ -1,0 +1,5 @@
+description : first experiment
+run for 30 epochs
+training time in seconds: 372.7610139870003
+Test loss : 0.0884877845278
+Test acc : 0.175944879923

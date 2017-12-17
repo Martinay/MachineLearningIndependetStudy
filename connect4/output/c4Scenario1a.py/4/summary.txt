@@ -1,0 +1,5 @@
+description : first experiment with softmax as activation
+run for 30 epochs
+training time in seconds: 392.65083941299963
+Test loss : 0.0579658380553
+Test acc : 0.280193719101

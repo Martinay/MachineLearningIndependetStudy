@@ -30,7 +30,7 @@ use_Gpu = True
 if use_Gpu:
     import tensorflow as tf
     from keras.backend.tensorflow_backend import set_session
-    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.3)
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
     config = tf.ConfigProto(gpu_options=gpu_options)
     config.gpu_options.allow_growth = True
     config.gpu_options.visible_device_list = "0"
