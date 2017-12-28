@@ -8,7 +8,7 @@ from keras.models import Model
 from keras import losses
 
 
-class btScenario10:
+class btScenario10aaaa:
     folder = 'breakthrough'
     file_name = os.path.basename(__file__)
 
@@ -20,7 +20,8 @@ class btScenario10:
     num_actions = 155
 
     def get_params(self):
-        return {'experiment_description':'CNN with sqaured field with size 64 * 64 and randomly shuffled, last activation = softmax'}
+        return {'experiment_description':'CNN with sqaured field with size 64 * 64 and randomly shuffled, 75% of data, last activation = softmax',
+                'train_data_percentage': 0.75}
 
     def file_path(self):
         return self.folder, self.file_name

@@ -8,7 +8,7 @@ from keras.models import Model
 from keras import losses
 
 
-class btScenario10:
+class btScenario1a:
     folder = 'breakthrough'
     file_name = os.path.basename(__file__)
 
@@ -20,7 +20,7 @@ class btScenario10:
     num_actions = 155
 
     def get_params(self):
-        return {'experiment_description':'CNN with sqaured field with size 64 * 64 and randomly shuffled, last activation = softmax'}
+        return {'experiment_description':'CNN with sqaured field with size 42 * 42 and randomly shuffled, last activation = softmax'}
 
     def file_path(self):
         return self.folder, self.file_name
@@ -46,13 +46,8 @@ class btScenario10:
             features_without_role = [*features_without_role, *loaded_features.values]
             labels = [*labels, *loaded_labels.values]
 
-        features_without_role = np.array(features_without_role).reshape(([-1, 64, 1, 2]))
+        features_without_role = np.array(features_without_role).reshape(([-1, 8, 8, 2]))
         features_without_role = np.repeat(features_without_role, len(features_without_role[0]), axis=2)
-        transposed = np.swapaxes(features_without_role, 0, 2)
-        np.random.seed(self.random_seed)
-        for row in transposed:
-            row = np.random.shuffle(row)
-        features_without_role = np.swapaxes(transposed, 0, 2)
         return role_index, features_without_role, labels
 
     def build_model(self, x_train_features, x_train_roles, y_train):
@@ -62,17 +57,12 @@ class btScenario10:
         inputRole = Input(shape=(1,), dtype='float32', name="x_role")
 
         # ((top_pad, bottom_pad), (left_pad, right_pad))
-        layers = Conv2D(16, (4, 4), padding='same', data_format="channels_last", activation='relu')(inputFeatures)
-        layers = MaxPooling2D(pool_size=(2, 2))(layers)
-
-        layers = ZeroPadding2D(padding=((1, 0), (1, 0)), data_format="channels_last")(layers)
-        layers = Conv2D(8, (2, 2), padding='same', data_format="channels_last", activation='relu')(layers)
-        layers = MaxPooling2D(pool_size=(2, 2))(layers)
+        layers = ZeroPadding2D(padding=((1, 0), (0, 0)), data_format="channels_last")(inputFeatures)
+        layers = Conv2D(16, (4, 4), padding='same', data_format="channels_last", activation='relu')(layers)
         layers = Flatten()(layers)
 
         layers = keras.layers.concatenate([inputRole, layers])
 
-        layers = Dense(128, activation='relu')(layers)
         layers = Dense(len(y_train[0]), activation='softmax')(layers)
 
         model = Model(inputs=[inputFeatures, inputRole], outputs=layers)

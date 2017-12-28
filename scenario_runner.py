@@ -22,7 +22,7 @@ class ScenarioRunner:
 
     trained_epochs = 0
     training_time = 0
-    execution_no = 8
+    execution_no = 0
 
     def init(self, experiment):
         self.experiment = experiment
@@ -342,8 +342,8 @@ class ScenarioRunner:
 
         self.trained_epochs = 0
 
-    def run(self, max_epoches=50, nr_of_executions = 1):
-        #self.delete_output_dir()
+    def run(self, max_epoches=20, nr_of_executions = 1):
+        self.delete_output_dir()
 
         while nr_of_executions > self.execution_no:
             #self.plot_current_execution_confusion_matrix()

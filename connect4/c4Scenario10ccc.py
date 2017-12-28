@@ -47,7 +47,7 @@ class c4Scenario10ccc:
             labels = [*labels, *loaded_labels.values]
 
         features_without_role = np.array(features_without_role).reshape(([-1, 42, 1, 3]))
-        features_without_role = np.repeat(features_without_role, len(features_without_role[0] * 1,5), axis=2)
+        features_without_role = np.repeat(features_without_role, len(features_without_role[0] * 1.5), axis=2)
         transposed = np.swapaxes(features_without_role, 0, 2)
         np.random.seed(self.random_seed)
         for row in transposed:

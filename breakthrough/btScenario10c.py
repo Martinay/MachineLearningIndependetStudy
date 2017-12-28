@@ -8,7 +8,7 @@ from keras.models import Model
 from keras import losses
 
 
-class btScenario10:
+class btScenario10c:
     folder = 'breakthrough'
     file_name = os.path.basename(__file__)
 
@@ -20,7 +20,7 @@ class btScenario10:
     num_actions = 155
 
     def get_params(self):
-        return {'experiment_description':'CNN with sqaured field with size 64 * 64 and randomly shuffled, last activation = softmax'}
+        return {'experiment_description':'CNN with sqaured field with size 64 * 64 first row is duplicated, last activation = softmax'}
 
     def file_path(self):
         return self.folder, self.file_name
@@ -48,11 +48,6 @@ class btScenario10:
 
         features_without_role = np.array(features_without_role).reshape(([-1, 64, 1, 2]))
         features_without_role = np.repeat(features_without_role, len(features_without_role[0]), axis=2)
-        transposed = np.swapaxes(features_without_role, 0, 2)
-        np.random.seed(self.random_seed)
-        for row in transposed:
-            row = np.random.shuffle(row)
-        features_without_role = np.swapaxes(transposed, 0, 2)
         return role_index, features_without_role, labels
 
     def build_model(self, x_train_features, x_train_roles, y_train):
