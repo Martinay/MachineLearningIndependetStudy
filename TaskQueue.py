@@ -1,7 +1,7 @@
 from threading import Thread
 import queue
 
-#source by Shashwat Kumar https://medium.com/@shashwat_ds/a-tiny-multi-threaded-job-queue-in-30-lines-of-python-a344c3f3f7f0
+#partially by Shashwat Kumar https://medium.com/@shashwat_ds/a-tiny-multi-threaded-job-queue-in-30-lines-of-python-a344c3f3f7f0
 class TaskQueue(queue.Queue):
 
     def __init__(self, num_workers=1):
@@ -22,7 +22,6 @@ class TaskQueue(queue.Queue):
 
     def worker(self):
         while True:
-            tupl = self.get()
             item, args, kwargs = self.get()
             item(*args, **kwargs)
             self.task_done()

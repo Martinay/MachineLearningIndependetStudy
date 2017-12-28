@@ -32,10 +32,10 @@ from connect4.c4Scenario8 import c4Scenario8
 from connect4.c4Scenario9 import c4Scenario9
 from scenario_runner import ScenarioRunner
 
-max_epoches=1#30
-nr_of_executions = 2#20
-use_Gpu = False
-num_workers_threads = 4
+max_epoches=30
+nr_of_executions = 20
+use_Gpu = True
+#num_workers_threads = 1
 
 if use_Gpu:
     import tensorflow as tf
@@ -70,29 +70,36 @@ scenarios = [#c4Scenario1(),
 #########################breakthrough#########################
              btScenario1(),
              btScenario1a(),
-             btScenario10(),
-             btScenario10a(),
-             btScenario10aa(),
-             btScenario10aaaa(),
-             btScenario10b(),
-             btScenario10bb(),
-             btScenario10c(),
-             btScenario10cc(),
-             btScenario10ccc(),
+             #btScenario10(),
+             #btScenario10a(),
+             #btScenario10aa(),
+             #btScenario10aaaa(),
+             #btScenario10b(),
+             #btScenario10bb(),
+             #btScenario10c(),
+             #btScenario10cc(),
+             #btScenario10ccc(),
              ]
 
-def runScenario(scenario, max_epoches, nr_of_executions):
-    print('Scenario {} started execution'.format(scenario.__class__.__name__))
+for scenario in scenarios:
+    print('start execution {}'.format(scenario.__class__.__name__))
     runner = ScenarioRunner()
     runner.init(scenario)
     runner.run(max_epoches=max_epoches, nr_of_executions=nr_of_executions)
 
 
-q = TaskQueue(num_workers=num_workers_threads)
+#def runScenario(scenario, max_epoches, nr_of_executions):
+#    print('Scenario {} started execution'.format(scenario.__class__.__name__))
+#    runner = ScenarioRunner()
+#    runner.init(scenario)
+#    runner.run(max_epoches=max_epoches, nr_of_executions=nr_of_executions)
 
-for scenario in scenarios:
-    q.add_task(runScenario, scenario, max_epoches=max_epoches, nr_of_executions=nr_of_executions)
-    print('Scenario {} added'.format(str(scenario.__class__.__name__)))
 
-q.join()
+#q = TaskQueue(num_workers=num_workers_threads)
+
+#for scenario in scenarios:
+#    q.add_task(runScenario, scenario, max_epoches=max_epoches, nr_of_executions=nr_of_executions)
+#    print('Scenario {} added'.format(str(scenario.__class__.__name__)))
+
+#q.join()
 print('finished')
