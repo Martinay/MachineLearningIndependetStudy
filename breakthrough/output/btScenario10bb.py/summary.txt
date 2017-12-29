@@ -1,0 +1,22 @@
+number of executions : 20
+description : CNN with sqaured field with size 64 * 64 and randomly shuffled with seed = 10, last activation = softmax
+
+
+#######Params#######
+batch_size : 32
+train_data_percentage : 1
+random_seed : 10
+
+
+#######Layer#######
+<keras.engine.topology.InputLayer object at 0x7f5fb9f82400>
+<keras.layers.convolutional.Conv2D object at 0x7f5f961fb198>
+<keras.layers.pooling.MaxPooling2D object at 0x7f5f961fb6d8>
+<keras.layers.convolutional.ZeroPadding2D object at 0x7f5f961d3f28>
+<keras.layers.convolutional.Conv2D object at 0x7f5f961d38d0>
+<keras.layers.pooling.MaxPooling2D object at 0x7f5f8e25db00>
+<keras.engine.topology.InputLayer object at 0x7f5f961f5f60>
+<keras.layers.core.Flatten object at 0x7f5f8e265550>
+<keras.layers.merge.Concatenate object at 0x7f5f961de780>
+<keras.layers.core.Dense object at 0x7f5f961d9b70>
+<keras.layers.core.Dense object at 0x7f5f961d5cc0>
