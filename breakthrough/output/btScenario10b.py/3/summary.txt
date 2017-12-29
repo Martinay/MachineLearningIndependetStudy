@@ -1,0 +1,5 @@
+description : CNN with sqaured field with size 64 * 64 and randomly shuffled with seed = 30, last activation = softmax
+run for 11 epochs
+training time in seconds: 199.1594430469995
+Test loss : 0.0031195581462
+Test acc : 0.00807061790668

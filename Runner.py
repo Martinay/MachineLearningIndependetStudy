@@ -40,7 +40,7 @@ use_Gpu = True
 if use_Gpu:
     import tensorflow as tf
     from keras.backend.tensorflow_backend import set_session
-    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.1)
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.9)
     config = tf.ConfigProto(gpu_options=gpu_options)
     config.gpu_options.allow_growth = True
     config.gpu_options.visible_device_list = "0"
@@ -70,15 +70,15 @@ scenarios = [#c4Scenario1(),
 #########################breakthrough#########################
              btScenario1(),
              btScenario1a(),
-             #btScenario10(),
-             #btScenario10a(),
-             #btScenario10aa(),
-             #btScenario10aaaa(),
-             #btScenario10b(),
-             #btScenario10bb(),
-             #btScenario10c(),
-             #btScenario10cc(),
-             #btScenario10ccc(),
+             btScenario10(),
+             btScenario10a(),
+             btScenario10aa(),
+             btScenario10aaaa(),
+             btScenario10b(),
+             btScenario10bb(),
+             btScenario10c(),
+             btScenario10cc(),
+             btScenario10ccc(),
              ]
 
 for scenario in scenarios:

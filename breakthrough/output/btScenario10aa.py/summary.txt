@@ -1,4 +1,4 @@
-number of executions : 1
+number of executions : 20
 description : CNN with sqaured field with size 64 * 64 and randomly shuffled, 25% of data, last activation = softmax
 
 
@@ -9,14 +9,14 @@ random_seed : 42
 
 
 #######Layer#######
-<keras.engine.topology.InputLayer object at 0x7f40c3befdd8>
-<keras.layers.convolutional.Conv2D object at 0x7f40c3e29dd8>
-<keras.layers.pooling.MaxPooling2D object at 0x7f40b6884588>
-<keras.layers.convolutional.ZeroPadding2D object at 0x7f40b68f1b70>
-<keras.layers.convolutional.Conv2D object at 0x7f40c3e15e48>
-<keras.layers.pooling.MaxPooling2D object at 0x7f40c3e12358>
-<keras.engine.topology.InputLayer object at 0x7f40c3e224a8>
-<keras.layers.core.Flatten object at 0x7f40c3e480b8>
-<keras.layers.merge.Concatenate object at 0x7f40c3e69710>
-<keras.layers.core.Dense object at 0x7f40c3e72cc0>
-<keras.layers.core.Dense object at 0x7f40c3e0ee48>
+<keras.engine.topology.InputLayer object at 0x7f5fae305940>
+<keras.layers.convolutional.Conv2D object at 0x7f5fae370e10>
+<keras.layers.pooling.MaxPooling2D object at 0x7f5fae5c4a20>
+<keras.layers.convolutional.ZeroPadding2D object at 0x7f5fae5b9198>
+<keras.layers.convolutional.Conv2D object at 0x7f5fae5b9828>
+<keras.layers.pooling.MaxPooling2D object at 0x7f5fae5bcd30>
+<keras.engine.topology.InputLayer object at 0x7f5f94890da0>
+<keras.layers.core.Flatten object at 0x7f5fae6ba208>
+<keras.layers.merge.Concatenate object at 0x7f5fae5b56d8>
+<keras.layers.core.Dense object at 0x7f5fae5c0630>
+<keras.layers.core.Dense object at 0x7f5fae592160>
