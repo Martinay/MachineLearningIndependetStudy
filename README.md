@@ -1,17 +1,17 @@
 # MachineLearningIndependetStudy
-Independent study about machine learning
-School of Computer Science
-Reykjavik University, Iceland
+Independent study in the topic area machine learning  
+School of Computer Science  
+Reykjavik University, Iceland  
 
 
 Follow up independent study, previous independent study: [thorgeirk11](https://github.com/thorgeirk11/IndepententStudy)
 
-# Introduction and problem description
+## Introduction and problem description
 With machine learning algorithms it’s possible to predict the action of a player in each state of a
 game. The machine learning algorithm which is used in this project is a subset of neural nets. It’s
 called convolutional neural network and is mostly applied to image recognition. The goal of this
 independent study is to examine, if it’s possible to train policies to a convolutional neural network
-in a topic which differs from image recognition.
+in a topic which differs from image recognition.  
 In this project player actions which are executed at a given state should be predicted success-
 fully. In the first step data of the game connect 4 and in a second step data of an unknown game
 are used. Based on that it should be examined how the accuracy of the predictions differ between
